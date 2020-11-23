@@ -1,5 +1,8 @@
 # shortrul
 
+[zero教程](https://gocn.vip/topics/10884)
+
+## api
 - 使用 goctl 生成 API Gateway 代码
 
 ```
@@ -31,3 +34,8 @@ goctl api go -api shorturl.api -dir .
 ├── go.mod
 └── go.sum
 ```
+
+## rpc
+
+
+goctl rpc template -o transform.proto
