@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/reaperhero/go-shorturl/rpc/transform/transformer"
 
 	"github.com/reaperhero/go-shorturl/api/internal/svc"
 	"github.com/reaperhero/go-shorturl/api/internal/types"
@@ -24,7 +25,16 @@ func NewShortenLogic(ctx context.Context, svcCtx *svc.ServiceContext) ShortenLog
 }
 
 func (l *ShortenLogic) Shorten(req types.ShortenReq) (*types.ShortenResp, error) {
-	// todo: add your logic here and delete this line
+	// 手动代码开始
+	resp, err := l.svcCtx.Transformer.Shorten(l.ctx, &transformer.ShortenReq{
+		Url: req.Url,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	return &types.ShortenResp{}, nil
+	return &types.ShortenResp{
+		Shorten: resp.Shorten,
+	}, nil
+	// 手动代码结束
 }

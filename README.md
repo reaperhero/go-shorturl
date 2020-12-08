@@ -1,41 +1,55 @@
 # shortrul
 
-[zero教程](https://gocn.vip/topics/10884)
+[zero教程](https://github.com/tal-tech/zero-doc/blob/main/doc/shorturl.md)
 
-## api
-- 使用 goctl 生成 API Gateway 代码
+- db
 
 ```
-cd api
-goctl api go -api shorturl.api -dir .
+create database gozero DEFAULT CHARACTER SET utf8mb4 ;;
+use gozero;
+CREATE TABLE `shorturl`
+(
+  `shorten` varchar(255) NOT NULL COMMENT 'shorten key',
+  `url` varchar(255) NOT NULL COMMENT 'original url',
+  PRIMARY KEY(`shorten`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-- 目录信息
+
+- shorten api 调用
+
 ```
-├── api
-│   ├── etc
-│   │   └── shorturl-api.yaml         // 配置文件
-│   ├── internal
-│   │   ├── config
-│   │   │   └── config.go             // 定义配置
-│   │   ├── handler
-│   │   │   ├── expandhandler.go      // 实现expandHandler
-│   │   │   ├── routes.go             // 定义路由处理
-│   │   │   └── shortenhandler.go     // 实现shortenHandler
-│   │   ├── logic
-│   │   │   ├── expandlogic.go        // 实现ExpandLogic
-│   │   │   └── shortenlogic.go       // 实现ShortenLogic
-│   │   ├── svc
-│   │   │   └── servicecontext.go     // 定义ServiceContext
-│   │   └── types
-│   │       └── types.go              // 定义请求、返回结构体
-│   ├── shorturl.api
-│   └── shorturl.go                   // main入口定义
-├── go.mod
-└── go.sum
+curl -i "http://localhost:8888/shorten?url=http://www.xiaoheiban.cn"
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sat, 29 Aug 2020 10:49:49 GMT
+Content-Length: 21
+
+{"shorten":"f35b2a"}
 ```
 
-## rpc
 
 
-goctl rpc template -o transform.proto
+- expand api 调用
+
+```
+curl -i "http://localhost:8888/expand?shorten=f35b2a"
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sat, 29 Aug 2020 10:51:53 GMT
+Content-Length: 34
+
+{"url":"http://www.xiaoheiban.cn"}
+```
+
+
+
+- etcd
+
+```
+> etcdctl --endpoints=$ENDPOINTS  get --from-key ""
+transform.rpc/4741857488835633933
+127.0.0.1:8080
+```

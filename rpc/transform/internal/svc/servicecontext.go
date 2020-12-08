@@ -1,13 +1,19 @@
 package svc
 
-import "github.com/reaperhero/go-shorturl/rpc/transform/internal/config"
+import (
+	"github.com/reaperhero/go-shorturl/rpc/transform/internal/config"
+	"github.com/reaperhero/go-shorturl/rpc/transform/model"
+	"github.com/tal-tech/go-zero/core/stores/sqlx"
+)
 
 type ServiceContext struct {
-	c config.Config
+	c     config.Config
+	Model *model.ShorturlModel // 手动代码
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
-		c: c,
+		c:     c,
+		Model: model.NewShorturlModel(sqlx.NewMysql(c.DataSource), c.Cache), // 手动代码
 	}
 }

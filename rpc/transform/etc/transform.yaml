@@ -2,5 +2,9 @@ Name: transform.rpc
 ListenOn: 127.0.0.1:8080
 Etcd:
   Hosts:
-  - 127.0.0.1:2379
+    - localhost:32769
   Key: transform.rpc
+DataSource: root:bgau1275vzasd@tcp(192.168.80.166:3306)/gozero
+Table: shorturl
+Cache:
+  - Host: localhost:6379
